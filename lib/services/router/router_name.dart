@@ -1,0 +1,9 @@
+const String notesScreenPath = "/NotesScreenPath";
+const String loginPath = "/LoginPath";
+const String quizPage = "/QuizPage";
+const String assignmentPath = "/AssignmentPath";
+const String resultPath = "/ResultPath";
+const String studentListPath = "/StudentListPath";
+const String upcomingEventPath = "/UpcomingEventPath";
+const String chatScreenPath = "/ChatScreenPath";
+const String syllabusPath = "/SyllabusPath";

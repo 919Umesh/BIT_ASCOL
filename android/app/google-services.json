@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "662072148304",
+    "project_id": "bitascol-a24f2",
+    "storage_bucket": "bitascol-a24f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662072148304:android:2633b644fb6e0e65066c55",
+        "android_client_info": {
+          "package_name": "com.example.bit_ascol"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbrBm7OmrpQQukOnvfMuDB9g61lgxDyIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
