@@ -50,7 +50,7 @@ class _ScrollingImagesState extends State<ScrollingImages> {
       width: 200.0,
       child: PageView.builder(
         controller: _pageController,
-        itemCount: 5000,
+        itemCount: 10000,
         itemBuilder: (context, index) {
           if (index % 3== 0) {
             return _buildImageCard(AssetsList.first1);

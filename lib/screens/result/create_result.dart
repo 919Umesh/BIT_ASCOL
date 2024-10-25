@@ -7,7 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class   CreateResult extends StatefulWidget {
+class CreateResult extends StatefulWidget {
   const CreateResult({super.key});
 
   @override
