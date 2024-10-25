@@ -23,6 +23,7 @@ void main() async {
   );
   final fcmToken = await FirebaseMessaging.instance.getToken();
   CustomLog.errorLog(value: fcmToken);
+  //Root of the App
   runApp(const MyApp());
 }
 
