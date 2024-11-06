@@ -2,6 +2,7 @@ import 'package:bit_ascol/components/scrolling.dart';
 import 'package:bit_ascol/screens/Home/syllabus/s_semster.dart';
 import 'package:bit_ascol/services/router/router_name.dart';
 import 'package:bit_ascol/utils/font_Style.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../config/assetList.dart';
 import '../screens/Home/questions/q_semester.dart';
@@ -48,7 +49,7 @@ class _GridListViewState extends State<GridListView> {
             ),
           ],
         ),
-        const ScrollingImages(),
+        _buildPromoBanner(),
         Row(
           children: [
             Expanded(
@@ -176,3 +177,48 @@ class GridWidget extends StatelessWidget {
   }
 }
 
+
+
+Widget _buildPromoBanner() {
+  // List of local asset image URLs to display in the carousel
+  final List<String> imageUrls = [
+    AssetsList.first1,
+    AssetsList.first2,
+    AssetsList.second,
+    // Add more image URLs as needed
+  ];
+
+  return CarouselSlider(
+    options: CarouselOptions(
+      height: 200,
+      autoPlay: true,
+      viewportFraction: 1.0,
+    ),
+    items: imageUrls.map((url) {
+      return Builder(
+        builder: (BuildContext context) {
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.deepOrange, Colors.orange],
+              ),
+            ),
+            child: Image.asset(
+              url,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(
+                  Icons.error,
+                  color: Colors.red,
+                  size: 50,
+                );
+              },
+            ),
+          );
+        },
+      );
+    }).toList(),
+  );
+}

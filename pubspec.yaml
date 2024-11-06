@@ -73,6 +73,7 @@ dependencies:
   intl: ^0.19.0
   firebase_analytics: ^11.3.0
   multi_image_picker_plus: ^0.0.5
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

@@ -32,22 +32,55 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchUserName();
-    fetchDataWithRetry();
+    _initializeData();
   }
 
-  void fetchUserName() async {
+  Future<void> _initializeData() async {
     try {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('usersData').doc(widget.userId).get();
+      setState(() {
+        isLoading = true;
+      });
+
+
+      await fetchUserName();
+
+      await fetchDataWithRetry();
+
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      log("Error initializing data: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchUserName() async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('usersData')
+          .doc(widget.userId)
+          .get();
+
       if (userDoc.exists) {
-        setState(() {
-          userName = userDoc['name'] ?? '';
-          profilePictureUrl = userDoc['profilePictureUrl'] ?? '';
-          isAdmin = userDoc['isAdmin'] ?? false;
-        });
-        SetAllPref.setIsAdmin(value: isAdmin);
-        Fluttertoast.showToast(
-            msg: isAdmin.toString(), backgroundColor: Colors.green);
+        if (mounted) {
+          setState(() {
+            userName = userDoc.get('name') ?? '';
+            profilePictureUrl = userDoc.get('profilePictureUrl') ?? '';
+            isAdmin = userDoc.get('isAdmin') ?? false;
+          });
+        }
+
+        await SetAllPref.setIsAdmin(value: isAdmin);
+
+        if (isAdmin) {
+          Fluttertoast.showToast(
+              msg: "Admin access granted",
+              backgroundColor: Colors.green
+          );
+        }
       } else {
         log("User does not exist.");
       }
@@ -56,18 +89,32 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void logOut() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.popUntil(context, (route) => route.isFirst);
-    Navigator.pushReplacement(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
-    Fluttertoast.showToast(
-        msg: "Successfully logout", backgroundColor: Colors.green);
+
+  Future<void> logOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      if (mounted) {  // Check if widget is still mounted
+        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.pushReplacement(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => const LoginScreen(),
+          ),
+        );
+      }
+      Fluttertoast.showToast(
+          msg: "Successfully logged out",
+          backgroundColor: Colors.green
+      );
+    } catch (e) {
+      log("Error during logout: $e");
+      Fluttertoast.showToast(
+          msg: "Error during logout",
+          backgroundColor: Colors.red
+      );
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
