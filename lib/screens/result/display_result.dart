@@ -1,3 +1,166 @@
+// import 'package:bit_ascol/services/sharePref/get_all_Pref.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_database/firebase_database.dart';
+// import 'package:flutter/material.dart';
+// import 'package:intl/intl.dart';
+// import 'package:loading_indicator/loading_indicator.dart';
+// import 'result_details.dart';
+// import 'create_result.dart';
+//
+// class ResultList extends StatefulWidget {
+//   const ResultList({super.key});
+//
+//   @override
+//   State<ResultList> createState() => _ResultListState();
+// }
+//
+// class _ResultListState extends State<ResultList> {
+//   late Future<List<Map<String, dynamic>>> _resultsFuture;
+//   late Future<bool> _isAdminFuture;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _resultsFuture = _fetchResults();
+//     _isAdminFuture = GetAllPref.getIsAdmin();
+//   }
+//
+//   Future<List<Map<String, dynamic>>> _fetchResults() async {
+//     try {
+//       final databaseReference = FirebaseDatabase.instanceFor(
+//         app: Firebase.app(),
+//         databaseURL: "https://bitascol-a24f2-default-rtdb.asia-southeast1.firebasedatabase.app/",
+//       ).ref().child('results').limitToLast(20);
+//
+//       final snapshot = await databaseReference.get();
+//
+//       if (snapshot.exists) {
+//         final data = snapshot.value as Map<dynamic, dynamic>;
+//         debugPrint('Data fetched: $data');
+//
+//         final results = data.entries.map((entry) {
+//           final result = entry.value as Map<dynamic, dynamic>;
+//           return {
+//             'key': entry.key,
+//             'subject': result['subject'] as String? ?? 'No Subject',
+//             'datetime': result['datetime'] as String? ?? DateTime.now().toIso8601String(),
+//             'imageUrl': result['imageUrl'] as String? ?? '',
+//           };
+//         }).toList();
+//
+//         results.sort((a, b) {
+//           DateTime dateA = DateTime.parse(a['datetime']);
+//           DateTime dateB = DateTime.parse(b['datetime']);
+//           return dateB.compareTo(dateA); // Descending order
+//         });
+//
+//         return results;
+//       } else {
+//         return [];
+//       }
+//     } catch (e) {
+//       debugPrint('Error fetching results: ${e.toString()}');
+//       return [];
+//     }
+//   }
+//
+//   String _formatDateTime(String dateTime) {
+//     DateTime parsedDate = DateTime.parse(dateTime);
+//     return DateFormat('dd MMM yyyy, hh:mm a').format(parsedDate);
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Result List'),
+//       ),
+//       body: FutureBuilder<List<Map<String, dynamic>>>(
+//         future: _resultsFuture,
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const Center(
+//               child: SizedBox(
+//                 height: 100,
+//                 width: 100,
+//                 child: LoadingIndicator(
+//                   indicatorType: Indicator.ballTrianglePathColored,
+//                   colors: [Colors.blue, Colors.red, Colors.green],
+//                   strokeWidth: 4,
+//                 ),
+//               ),
+//             );
+//           }
+//
+//           if (snapshot.hasError) {
+//             return Center(child: Text('Error: ${snapshot.error}'));
+//           }
+//
+//           if (!snapshot.hasData || snapshot.data!.isEmpty) {
+//             return const Center(child: Text('No results available.'));
+//           }
+//
+//           List<Map<String, dynamic>> results = snapshot.data!;
+//
+//           return ListView.separated(
+//             itemCount: results.length,
+//             separatorBuilder: (context, index) => const Divider(height: 1),
+//             itemBuilder: (context, index) {
+//               final result = results[index];
+//
+//               return Card(
+//                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+//                 child: ListTile(
+//                   title: Text(result['subject']!),
+//                   subtitle: Text('Date: ${_formatDateTime(result['datetime'])}'),
+//                   // subtitle: Text('Date: ${result['datetime']}'),
+//                   onTap: () {
+//                     Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                         builder: (context) => ResultDetailScreen(
+//                           result: result,
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               );
+//             },
+//           );
+//         },
+//       ),
+//       floatingActionButton: FutureBuilder<bool>(
+//         future: _isAdminFuture,
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const SizedBox(); // Placeholder while loading
+//           }
+//
+//           if (snapshot.hasError) {
+//             return const SizedBox(); // Handle error if needed
+//           }
+//
+//           final isAdmin = snapshot.data ?? false;
+//
+//           return isAdmin
+//               ? FloatingActionButton(
+//                   onPressed: () {
+//                     Navigator.of(context).push(
+//                       MaterialPageRoute(
+//                         builder: (context) => const CreateResult(),
+//                       ),
+//                     );
+//                   },
+//                   child: const Icon(Icons.add),
+//                 )
+//               : const SizedBox(); // Hide FAB if not admin
+//         },
+//       ),
+//     );
+//   }
+// }
+
 import 'package:bit_ascol/services/sharePref/get_all_Pref.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -51,7 +214,7 @@ class _ResultListState extends State<ResultList> {
         results.sort((a, b) {
           DateTime dateA = DateTime.parse(a['datetime']);
           DateTime dateB = DateTime.parse(b['datetime']);
-          return dateB.compareTo(dateA); // Descending order
+          return dateB.compareTo(dateA);
         });
 
         return results;
@@ -72,58 +235,196 @@ class _ResultListState extends State<ResultList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text('Result List'),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Result List',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _resultsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: SizedBox(
-                height: 100,
-                width: 100,
-                child: LoadingIndicator(
-                  indicatorType: Indicator.ballTrianglePathColored,
-                  colors: [Colors.blue, Colors.red, Colors.green],
-                  strokeWidth: 4,
+            return Center(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.ballTrianglePathColored,
+                        colors: [Colors.blue, Colors.red, Colors.green],
+                        strokeWidth: 4,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'Loading Results...',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );
           }
 
           if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 60, color: Colors.red[300]),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Error: ${snapshot.error}',
+                    style: const TextStyle(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No results available.'));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.note_alt_outlined, size: 80, color: Colors.grey[400]),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No results available',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
 
           List<Map<String, dynamic>> results = snapshot.data!;
 
-          return ListView.separated(
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
             itemCount: results.length,
-            separatorBuilder: (context, index) => const Divider(height: 1),
             itemBuilder: (context, index) {
               final result = results[index];
 
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: ListTile(
-                  title: Text(result['subject']!),
-                  subtitle: Text('Date: ${_formatDateTime(result['datetime'])}'),
-                  // subtitle: Text('Date: ${result['datetime']}'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResultDetailScreen(
-                          result: result,
+              return Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResultDetailScreen(
+                            result: result,
+                          ),
                         ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(
+                                  Icons.article_rounded,
+                                  color: Colors.blue,
+                                  size: 24,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  result['subject']!,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.grey[400],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.access_time,
+                                size: 16,
+                                color: Colors.grey[600],
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                _formatDateTime(result['datetime']),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 ),
               );
             },
@@ -133,28 +434,42 @@ class _ResultListState extends State<ResultList> {
       floatingActionButton: FutureBuilder<bool>(
         future: _isAdminFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SizedBox(); // Placeholder while loading
-          }
-
-          if (snapshot.hasError) {
-            return const SizedBox(); // Handle error if needed
+          if (!snapshot.hasData || snapshot.hasError) {
+            return const SizedBox();
           }
 
           final isAdmin = snapshot.data ?? false;
 
           return isAdmin
-              ? FloatingActionButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const CreateResult(),
-                      ),
-                    );
-                  },
-                  child: const Icon(Icons.add),
-                )
-              : const SizedBox(); // Hide FAB if not admin
+              ? Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Colors.blue, Colors.blueAccent],
+              ),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const CreateResult(),
+                  ),
+                );
+              },
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              child: const Icon(Icons.add, size: 28),
+            ),
+          )
+              : const SizedBox();
         },
       ),
     );

@@ -1,82 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'greetings.dart';
-//
-// class TopContainer extends StatelessWidget {
-//   final String userName;
-//   final String profilePictureUrl;
-//
-//   const TopContainer({
-//     Key? key,
-//     required this.userName,
-//     required this.profilePictureUrl,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final double screenHeight = MediaQuery.of(context).size.height;
-//     final double screenWidth = MediaQuery.of(context).size.width;
-//     return Container(
-//       decoration: BoxDecoration(
-//        // color: primaryColor,
-//         gradient: const LinearGradient(
-//           colors: [Colors.blueAccent, Colors.purpleAccent],
-//           begin: Alignment.topLeft,
-//           end: Alignment.bottomRight,
-//         ),
-//         borderRadius: const BorderRadius.only(
-//           bottomLeft: Radius.circular(20), // Smooth circular radius
-//           bottomRight: Radius.circular(20),
-//         ),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.black.withOpacity(0.3),
-//             blurRadius: 10,
-//             offset: const Offset(0, 4),
-//           ),
-//         ],
-//       ),
-//       height: screenHeight / 5, // Adjusted height
-//       width: screenWidth, // Full width of the screen
-//       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               const GreetingText(),
-//               const SizedBox(height: 5),
-//               Text(
-//                 userName,
-//                 style: const TextStyle(
-//                     color: Colors.white,
-//                     fontSize: 22,
-//                     fontWeight: FontWeight.bold),
-//               ),
-//             ],
-//           ),
-//           ClipOval(
-//             child: SizedBox(
-//               width: 60, // Slightly larger profile picture
-//               height: 60,
-//               child: Image.network(
-//                 profilePictureUrl,
-//                 fit: BoxFit.cover,
-//                 errorBuilder: (context, error, stackTrace) {
-//                   return const Icon(Icons.account_circle,
-//                       size: 60, color: Colors.white);
-//                 },
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-//
-//
 
 
 import 'package:flutter/material.dart';
@@ -141,7 +62,7 @@ class _TopContainerState extends State<TopContainer> {
               const GreetingText(),
               const SizedBox(height: 5),
               Text(
-                widget.userName,
+                widget.userName.isNotEmpty?widget.userName:'BIT | ASCOL',
                 style: const TextStyle(
                     color: Colors.white,
                     fontSize: 22,
@@ -154,7 +75,7 @@ class _TopContainerState extends State<TopContainer> {
               width: 60,
               height: 60,
               child: Image.network(
-                widget.profilePictureUrl,
+               widget.profilePictureUrl,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return const Icon(Icons.account_circle,

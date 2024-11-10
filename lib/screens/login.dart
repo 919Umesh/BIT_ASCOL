@@ -86,7 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
           biometricOnly: true,
         ),
       );
-
       if (isAuthenticated) {
         String? userId = await storage.read(key: 'userId');
 

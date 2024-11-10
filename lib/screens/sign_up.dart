@@ -1,6 +1,7 @@
 
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -73,7 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             'contact': contact,
             'email': email,
             'address': address,
-            'isAdmin': false, // Automatically set role as 'User' (false means User)
+            'isAdmin': false,
           });
 
           Navigator.pop(context);
@@ -184,7 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
                       }
-                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      if (!EmailValidator.validate(value)) {
                         return 'Please enter a valid email address';
                       }
                       return null;
