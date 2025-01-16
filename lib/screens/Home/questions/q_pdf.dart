@@ -21,7 +21,7 @@ class PdfListQuestionScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(subject,style: TextStyle(color: Colors.white),),
+        title: Text(subject,style: const TextStyle(color: Colors.white),),
         backgroundColor: primaryColor, // Use primaryColor for AppBar
       ),
       body: Padding(
@@ -77,7 +77,7 @@ class PdfListQuestionScreen extends StatelessWidget {
 class PdfViewerScreen extends StatelessWidget {
   final String pdfUrl;
 
-  const PdfViewerScreen({Key? key, required this.pdfUrl}) : super(key: key);
+  const PdfViewerScreen({super.key, required this.pdfUrl});
 
   @override
   Widget build(BuildContext context) {

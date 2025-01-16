@@ -52,7 +52,8 @@ class _QuestionSemScreenState extends State<QuestionSemScreen> {
       );
       final databaseReference = FirebaseDatabase.instanceFor(
         app: Firebase.app(),
-        databaseURL: "https://bitascol-a24f2-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        databaseURL:
+            "https://bitascol-a24f2-default-rtdb.asia-southeast1.firebasedatabase.app/",
       ).ref().child('questions');
       final snapshot = await databaseReference.get();
       if (snapshot.exists) {
@@ -70,7 +71,7 @@ class _QuestionSemScreenState extends State<QuestionSemScreen> {
 
           setState(() {
             _pdfList = pdfList.cast<Map<String, dynamic>>();
-            _semesters = _getSemesters(); // Extract unique semesters
+            _semesters = _getSemesters();
           });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -101,55 +102,58 @@ class _QuestionSemScreenState extends State<QuestionSemScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Semester',style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Select Semester',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: primaryColor, // Use primaryColor for AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: _isLoading
             ? const Center(
-          child: SizedBox(
-            height: 100,
-            width: 100,
-            child: LoadingIndicator(
-              indicatorType: Indicator.ballTrianglePathColored,
-              colors: [Colors.blue, Colors.red, Colors.green],
-              strokeWidth: 4,
-            ),
-          ),
-        )
-            : _semesters.isNotEmpty
-            ? ListView.builder(
-          itemCount: _semesters.length,
-          itemBuilder: (context, index) {
-            return Card(
-              elevation: 5,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
-                title: Text(
-                  'Semester: ${_semesters[index]}',
-                  style: TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.bold,
+                child: SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: LoadingIndicator(
+                    indicatorType: Indicator.ballTrianglePathColored,
+                    colors: [Colors.blue, Colors.red, Colors.green],
+                    strokeWidth: 4,
                   ),
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => QuestionSubListScreen(
-                        semester: _semesters[index],
-                        pdfList: _pdfList,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
-        )
-            : const Center(child: Text('No Semesters available')),
+              )
+            : _semesters.isNotEmpty
+                ? ListView.builder(
+                    itemCount: _semesters.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        elevation: 5,
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(16),
+                          title: Text(
+                            'Semester: ${_semesters[index]}',
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => QuestionSubListScreen(
+                                  semester: _semesters[index],
+                                  pdfList: _pdfList,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  )
+                : const Center(child: Text('No Semesters available')),
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
@@ -173,15 +177,15 @@ class _QuestionSemScreenState extends State<QuestionSemScreen> {
 
           return isAdmin
               ? FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const CreateQuestions(),
-                ),
-              );
-            },
-            child: const Icon(Icons.add),
-          )
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const CreateQuestions(),
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.add),
+                )
               : const SizedBox(); // Hide FAB if not admin
         },
       ),

@@ -11,6 +11,7 @@ import '../../../retry.dart';
 import '../../../utils/customLog.dart';
 import '../../login.dart';
 import '../about/aboutBit.dart';
+import '../about/about_us.dart';
 import '../about/ascol.dart';
 
 class DrawerSection extends StatefulWidget {
@@ -134,6 +135,17 @@ class _DrawerSectionState extends State<DrawerSection> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const AboutBIT()),
+                      );
+                    },
+                  ),
+                  divider(),
+                  DrawerIconName(
+                    name: "About US",
+                    iconName: Icons.info_outline,
+                    onTap: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AboutUs()),
                       );
                     },
                   ),

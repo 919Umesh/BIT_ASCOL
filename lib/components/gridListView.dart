@@ -1,4 +1,3 @@
-import 'package:bit_ascol/components/scrolling.dart';
 import 'package:bit_ascol/screens/Home/syllabus/s_semster.dart';
 import 'package:bit_ascol/services/router/router_name.dart';
 import 'package:bit_ascol/utils/font_Style.dart';

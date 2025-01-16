@@ -61,11 +61,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
 
       try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
 
         if (userCredential.user != null) {
-          // Store additional user information in Firestore
+          await userCredential.user?.sendEmailVerification();
+          Fluttertoast.showToast(msg: "Verification email sent! Please check your inbox.");
+          Navigator.pop(context);
+
+          await waitForEmailVerification();
+
           await FirebaseFirestore.instance
               .collection('usersData')
               .doc(userCredential.user!.uid)
@@ -76,14 +80,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             'address': address,
             'isAdmin': false,
           });
-
           Navigator.pop(context);
-
-          // Show success message
-          Fluttertoast.showToast(
-              msg: "Account created successfully!",
-              backgroundColor: Colors.green);
-
+          Fluttertoast.showToast(msg: "Account verified successfully!", backgroundColor: Colors.green);
           Navigator.pop(context);
         }
       } on FirebaseAuthException catch (ex) {
@@ -94,6 +92,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Fluttertoast.showToast(msg: ex.message ?? "Failed to create account");
         log(ex.code.toString());
       }
+    }
+  }
+
+  Future<void> waitForEmailVerification() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    while (user != null && !user.emailVerified) {
+      await user.reload();
+      await Future.delayed(const Duration(seconds: 3));
     }
   }
 

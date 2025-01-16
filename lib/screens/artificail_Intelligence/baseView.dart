@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +6,7 @@ import 'locator.dart';
 
 class BaseView<T extends BaseModel> extends StatefulWidget {
   const BaseView({super.key, required this.builder, this.onModelReady});
+
   final Widget Function(BuildContext context, T model, Widget? child) builder;
   final Function(T)? onModelReady;
 

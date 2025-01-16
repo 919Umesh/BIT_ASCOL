@@ -1,3 +1,4 @@
+import 'package:bit_ascol/messaging/firebase_messaging.dart';
 import 'package:bit_ascol/screens/artificail_Intelligence/locator.dart';
 import 'package:bit_ascol/services/router/router_helper.dart';
 import 'package:bit_ascol/splashScreen.dart';
@@ -18,12 +19,12 @@ void main() async {
     persistenceEnabled: true,
   );
   setUpLocator();
-  Gemini.init(
-    apiKey: 'AIzaSyDr-kAw-M0eNXfCDMhFO_pNdRhAQibXids',
-  );
+  //Gemini.init(apiKey: 'AIzaSyDr-kAw-M0eNXfCDMhFO_pNdRhAQibXids',);
+  Gemini.init(apiKey: 'AIzaSyB38ZlrueV7Cc0LdD51VIteLHV3cWJT9Sg',);
   final fcmToken = await FirebaseMessaging.instance.getToken();
   CustomLog.errorLog(value: fcmToken);
-  //Root of the App
+  final pushNotificationService = PushNotificationService();
+  await pushNotificationService.initialize();
   runApp(const MyApp());
 }
 
