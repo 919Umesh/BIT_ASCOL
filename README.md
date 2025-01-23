@@ -221,9 +221,9 @@ flutter run
 - Commercial usage allowed
 
 ## 📞 Support and Contact
-- Developer: [Your Name]
+- Developer: Umesh Shahi
 - Email: thakuriumesh919@gmail.com
-- Support Discord: [Discord Invite Link]
+- Contact: 9868732774
 
 ## 🚧 Roadmap
 - Enhanced AI capabilities
