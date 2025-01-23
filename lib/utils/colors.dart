@@ -5,7 +5,7 @@ Color primaryColor = Colors.purple;
 MaterialColor primarySwatch = Colors.blue;
 
  const LinearGradient gradient = LinearGradient(
-  colors: [Colors.purple, Colors.blue], // Example gradient colors
+  colors: [Colors.purple, Colors.blue],
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
 );

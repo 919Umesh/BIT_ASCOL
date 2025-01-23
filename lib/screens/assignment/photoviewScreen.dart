@@ -14,7 +14,7 @@ class PhotoViewScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Zoomable Image'),
-        backgroundColor: primaryColor, // Use primary color for AppBar
+        backgroundColor: primaryColor,
       ),
       body: PhotoViewGallery.builder(
         itemCount: 1,
