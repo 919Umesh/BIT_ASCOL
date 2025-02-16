@@ -231,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        CupertinoPageRoute(builder: (context) => ForgotPasswordScreen()),
+                        CupertinoPageRoute(builder: (context) =>const ForgotPasswordScreen()),
                       );
                     },
                     child: Text(
